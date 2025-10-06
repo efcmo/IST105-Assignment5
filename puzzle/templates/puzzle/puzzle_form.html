@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Treasure Hunt</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: sans-serif;
+            padding: 40px;
+        }
+        h1 { color: gold; }
+        form { margin-bottom: 30px; }
+        input[type=submit] {
+            background-color: gold;
+            color: black;
+            border: none;
+            padding: 8px 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .result { margin-top: 20px; border-top: 1px solid #555; padding-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>🏴‍☠️ Welcome to the Interactive Treasure Hunt!</h1>
+    <p>Enter your details to solve the puzzle and find the treasure.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Solve the Puzzle">
+    </form>
+
+    {% if result %}
+        <div class="result">
+            <h2>Results:</h2>
+
+            <h3>Number Puzzle:</h3>
+            <p>The number {{ result.number }} is {{ result.number_type }}. Its cube is {{ result.cube }}.</p>
+
+            <h3>Text Puzzle:</h3>
+            <p>Binary: {{ result.binary_text }}</p>
+            <p>Vowel Count: {{ result.vowel_count }}</p>
+
+            <h3>Treasure Hunt:</h3>
+            <p>The secret number is 42.</p>
+            {% for line in result.feedback %}
+                <p>- {{ line }}</p>
+            {% endfor %}
+            <p><strong>You found the treasure in {{ result.attempts }} attempts!</strong></p>
+        </div>
+    {% endif %}
+</body>
+</html>
